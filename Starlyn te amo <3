@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be my Valentine? ❤️</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #ffebee;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #d32f2f;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #btn-si {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        #btn-no {
+            background-color: #f44336;
+            color: white;
+        }
+
+        /* Contenedor para la lluvia de corazones */
+        .heart {
+            position: absolute;
+            color: #e91e63;
+            font-size: 2rem;
+            animation: fall linear forwards;
+            z-index: 100;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="question">Do you want to be my valentine? ❤️</h1>
+
+    <div class="buttons" id="button-container">
+        <button id="btn-si">Sí</button>
+        <button id="btn-no">No</button>
+    </div>
+
+    <script>
+        const btnSi = document.getElementById('btn-si');
+        const btnNo = document.getElementById('btn-no');
+        const question = document.getElementById('question');
+        
+        let clickCount = 0;
+        let siScale = 1;
+
+        // Lógica para el botón NO
+        btnNo.addEventListener('click', () => {
+            clickCount++;
+            
+            // Hacer crecer el botón SÍ
+            siScale += 0.5;
+            btnSi.style.transform = `scale(${siScale})`;
+
+            // Desaparecer el botón NO al tercer click
+            if (clickCount >= 3) {
+                btnNo.style.display = 'none';
+            }
+        });
+
+        // Lógica para el botón SÍ
+        btnSi.addEventListener('click', () => {
+            question.innerText = "¡SABÍA QUE DIRÍAS QUE SÍ! 😍";
+            document.getElementById('button-container').style.display = 'none';
+            lanzarCorazones();
+        });
+
+        function lanzarCorazones() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.top = '-5vh';
+                    heart.style.duration = (Math.random() * 2 + 3) + 's';
+                    heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(heart);
+
+                    // Limpiar el DOM después de la animación
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 100);
+            }
+        }
+    </script>
+</body>
+</html>
